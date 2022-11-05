@@ -18,21 +18,54 @@
 
 pragma solidity ^0.8.0;
 
+import { string_equals } from "./../Lib/StringUtils.sol";
+
 struct SingleProfile {
   string name;
-  string totalTracksAdded;
+  uint totalTracksAdded;
+  string description;
+  string username;
 }
 
-/// @title A title that should describe the contract/interface
-/// @author The name of the author
-/// @notice Explain to an end user what this does
-/// @dev Explain to a developer any extra details
+/// @title Profile contract use to access profile of the user
+/// @author Ritik Ranjan
+/// @notice Profile
+/// @dev N.A
 
 contract Profile {
   mapping ( address => SingleProfile ) profileMap;
+  address[] profileAddresses;
 
-  function createProfile(string memory name) {
-    profileMap
-    
+  function createProfile(string memory name, string memory desc, string memory username) public {
+    profileMap[msg.sender] = SingleProfile({
+        name: name,
+        totalTracksAdded: 0,
+        description: desc,
+        username: username
+    });
+
+    profileAddresses.push(msg.sender);
+  }
+
+  function createdNewTrack() public {
+      profileMap[msg.sender].totalTracksAdded ++;
+  }
+
+  function changeDescription(string memory desc) public {
+      profileMap[msg.sender].description = desc;
+  }
+
+  function getProfile() public view returns (SingleProfile memory) {
+      return profileMap[msg.sender];
+  }
+
+  function isUsernameExisted(string memory username) public view returns(bool) {
+      for (uint i=0; i < profileAddresses.length; i++) {
+        if ( string_equals(profileMap[profileAddresses[i]].username, username) ) {
+          return true;
+        }
+      }
+
+      return false;
   }
 }
