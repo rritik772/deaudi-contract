@@ -37,9 +37,10 @@ struct Track {
   string IPFSHash;
   string description;
 
-
   uint timestamp; // added on
   address addedBy;
+  string addedByName;
+  string album;
   string[] artists;
 
   bool isDeleted;
@@ -62,7 +63,9 @@ contract Tracks {
     string memory IPFS_hash,
     string memory description,
 
-    string[] memory artists
+    string[] memory artists,
+    string memory album,
+    string memory added_by_name
   ) public {
 
     Track memory track = Track({
@@ -75,6 +78,8 @@ contract Tracks {
       timestamp: block.timestamp,
       addedBy: msg.sender,
       artists: artists,
+      album: album,
+      addedByName: added_by_name,
 
       isDeleted: false
     });
