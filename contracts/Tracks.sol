@@ -32,8 +32,8 @@ import { in_array } from "./../Lib/ArrayUtils.sol";
 
 struct Track {
   string name;
-  uint trackId;
-  uint length;
+  uint trackId; 
+  uint length; 
   string IPFSHash;
   string description;
 
@@ -129,5 +129,24 @@ contract Tracks {
 
   function totalTracks() public view returns (uint) {
     return trackList.length;
+  }
+
+  function getTracksAddedByArtist() public view returns (Track[] memory) {
+    uint tracks_count = 0;
+    for (uint i = 0; i < trackList.length; i++) {
+      if ( trackList[i].addedBy == msg.sender ) { tracks_count ++; }
+    }
+
+    Track[] memory searched_tracks = new Track[](tracks_count);
+    uint j = 0;
+
+    for (uint i = 0; i < trackList.length; i++) {
+      if ( trackList[i].addedBy == msg.sender ) { 
+        searched_tracks[j] = trackList[i];
+        j++; 
+      }
+    }
+
+    return searched_tracks;
   }
 }
