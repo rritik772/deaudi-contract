@@ -34,6 +34,7 @@ struct Track {
   string name;
   uint trackId; 
   uint length; 
+  string imgUrl;
   string IPFSHash;
   string description;
 
@@ -60,6 +61,7 @@ contract Tracks {
     string memory name,
     uint track_id,
     uint length,
+    string memory imgUrl,
     string memory IPFS_hash,
     string memory description,
 
@@ -68,12 +70,15 @@ contract Tracks {
     string memory added_by_name
   ) public {
 
+    uint index = trackList.length + 1;
+
     Track memory track = Track({
       name: name,
       trackId: track_id,
-      length: length,
+      length: index,
       IPFSHash: IPFS_hash,
       description: description,
+      imgUrl: imgUrl,
 
       timestamp: block.timestamp,
       addedBy: msg.sender,
@@ -85,6 +90,10 @@ contract Tracks {
     });
 
     trackList.push(track);
+  }
+
+  function getAllTracks() public view returns (Track[] memory) {
+    return trackList;
   }
 
   function getTracks(string memory track_name) public view returns (Track[] memory) {
