@@ -60,7 +60,6 @@ contract Tracks {
   function addTrack(
     string memory name,
     uint track_id,
-    uint length,
     string memory imgUrl,
     string memory IPFS_hash,
     string memory description,
